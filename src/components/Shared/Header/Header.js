@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.PNG';
+import './Header.css';
 
 const Header = () => {
     // menu items
@@ -14,7 +15,7 @@ const Header = () => {
         <li>{user ? <button onClick={logOut} className="btn btn-ghost font-bold">Sign Out</button> : <Link to="/login">Login</Link>}</li> */}
     </>
     return (
-        <div className="navbar bg-primary">
+        <div className="navbar custom-bg">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex="0" className="btn btn-ghost lg:hidden text-white">
@@ -24,10 +25,10 @@ const Header = () => {
                         {menuItems}
                     </ul>
                 </div>
-                <Link to="/" className="btn btn-ghost normal-case text-4xl text-white font-bold"><img className="h-10" src={logo} alt="" /></Link>
+                <Link to="/" className="btn btn-ghost normal-case text-3xl text-white"><h3>Power Hack</h3></Link>
             </div>
             <div className="navbar-end hidden lg:flex">
-                <ul className="menu menu-horizontal p-0 text-white font-bold">
+                <ul className="menu menu-horizontal p-0 text-white">
                     {menuItems}
                 </ul>
             </div>
