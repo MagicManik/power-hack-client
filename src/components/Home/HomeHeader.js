@@ -12,6 +12,11 @@ const HomeHeader = () => {
 
     const handleShow = () => setAddBill(true);
 
+    // pageCount state
+    const [pageCount, setPageCount] = useState(0);
+
+
+
     // table
     // const [bills, setBills] = useState([]);
 
@@ -19,7 +24,7 @@ const HomeHeader = () => {
 
     const handleSearch = event => {
         const searchText = event.target.value;
-        const result = bills.filter(bill => bill.name.toLowerCase().includes(searchText));
+        const result = bills.filter(bill => ((bill.name.toLowerCase()).includes(searchText.toLowerCase()) || (bill.email.toLowerCase()).includes(searchText.toLowerCase()) || (bill.phone.toLowerCase()).includes(searchText.toLowerCase())));
         setSearchResult(result);
     }
 
@@ -46,6 +51,19 @@ const HomeHeader = () => {
             });
 
     }, [bills]);
+
+
+    // to create pagination
+    // collect product length
+    useEffect(() => {
+        fetch('http://localhost:5000/billCount')
+            .then(res => res.json())
+            .then(data => {
+                const totalProduct = data.count;
+                const totalPage = Math.ceil(totalProduct / 10);
+                setPageCount(totalPage);
+            })
+    }, [])
 
 
 
@@ -98,6 +116,13 @@ const HomeHeader = () => {
                                 </Table>
                             )
                         }
+                        {/* create pagination button */}
+                        <div>
+                            {
+                                [...Array(pageCount).keys()].map(number =>
+                                    <button>{number + 1}</button>)
+                            }
+                        </div>
                     </table>
                 </div>
 
