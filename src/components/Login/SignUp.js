@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 const SignUp = () => {
@@ -6,47 +7,14 @@ const SignUp = () => {
     // use form
     const { register, formState: { errors }, handleSubmit } = useForm();
 
-
-    // use token
-    // const [token] = useToken(user || gUser);
-
-
-    // use navigate hook
-    // const navigate = useNavigate();
-
-
-    // after getting token redirect user to the previous page
-    /* useEffect(() => {
-        if (token) {
-            navigate('/home');
-        }
-    }, [token, navigate]) */
-
-
-
-    // error message declare and error handle
-    /* let errorMessage;
-    if (error || gError || updateError) {
-        errorMessage = <p className='text-red-600'>{error?.message || gError?.message || updateError?.message}</p>
-    } */
-
-
     // form submit
-
     const onSubmit = async data => {
 
         const name = data.name;
         const email = data.email;
         const password = data.password;
 
-        // create user sign in
-        // await createUserWithEmailAndPassword(email, password);
-
-        // update profile
-        // await updateProfile({ displayName: name });
-
-
-        const result = await fetch('http://localhost:5000/api/registration', {
+        const result = await fetch('https://upper-crown-54943.herokuapp.com/api/registration', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,6 +28,7 @@ const SignUp = () => {
 
         if (result.status === 'ok') {
             // everythign went fine
+            localStorage.setItem('token', result.data)
             alert('Success')
         }
         else {
@@ -67,9 +36,22 @@ const SignUp = () => {
         }
     };
 
+    // use token
+    const token = localStorage.getItem('token');
+    // use navigate hook
+    const navigate = useNavigate();
+
+    // after getting token redirect user to the previous page
+    useEffect(() => {
+        if (token) {
+            navigate('/home');
+        }
+    }, [token, navigate])
+
     return (
         <div className='flex h-screen justify-center items-center'>
             <div className="card w-96 bg-base-100 shadow-xl">
+                <h4>Please create your account</h4>
                 <div className="card-body">
                     <h2 className="text-center text-2xl font-bold">Sign Up</h2>
 
@@ -133,16 +115,6 @@ const SignUp = () => {
                     </form>
 
                     <p className='text-center'>Already Have an account? <a href="/login" className='text-secondary'>Log in Please</a></p>
-                    <div className="divider">OR</div>
-                    <button
-                        className="btn btn-outline"
-                    >Continue With Google
-                    </button>
-                    {/* <button
-                    onClick={() => signInWithGoogle()}
-                    className="btn btn-outline"
-                >Continue With Google
-                </button> */}
                 </div>
             </div>
         </div >

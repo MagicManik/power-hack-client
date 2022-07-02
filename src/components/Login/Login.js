@@ -1,45 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-
     // use react hook form
-    /* const { register, getValues, formState: { errors }, handleSubmit } = useForm(); */
     const { register, formState: { errors }, handleSubmit } = useForm();
-
-
-    // use token
-    // const [token] = useToken(user || gUser);
-
-
-    // use navigate hook
-    /* const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/"; */
-
-
-    // after getting token redirect user to the previous page
-    /* useEffect(() => {
-        if (token) {
-            navigate(from, { replace: true });
-        }
-    }, [token, from, navigate]) */
-
-
-
-    // loading handle
-    /* if (loading || gLoading || sending) {
-        return <Loading></Loading>
-    } */
-
-
-    // error message declare and error handle
-    /* let errorMessage;
-    if (error || gError) {
-        errorMessage = <p className='text-red-600'>{error?.message || gError?.message}</p>
-    } */
-
 
     // form submit
     const onSubmit = async data => {
@@ -47,10 +13,7 @@ const Login = () => {
         const email = data.email;
         const password = data.password;
 
-        // sign in
-        // signInWithEmailAndPassword(email, password);
-
-        const result = await fetch('http://localhost:5000/api/login', {
+        const result = await fetch('https://upper-crown-54943.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,8 +25,6 @@ const Login = () => {
         }).then((res) => res.json())
 
         if (result.status === 'ok') {
-            // everything went fine
-            console.log('Got the token: ', result.data)
             localStorage.setItem('token', result.data)
             alert('Success')
         } else {
@@ -72,22 +33,23 @@ const Login = () => {
 
     };
 
+    // use token
+    const token = localStorage.getItem('token');
 
-    // reset password email sent button handler
-    /* const resetPassword = async () => {
-        const email = getValues("email");
-        if (email) {
-            await sendPasswordResetEmail(email);
-            toast('Sent email');
+    // use navigate hook
+    const navigate = useNavigate();
+
+    // after getting token redirect user to the previous page
+    useEffect(() => {
+        if (token) {
+            navigate('/home');
         }
-        else {
-            toast('please enter your email address');
-        }
-    } */
+    }, [token, navigate])
 
     return (
         <div className='flex h-screen justify-center items-center'>
             <div className="card w-96 bg-base-100 shadow-xl">
+                <h4>Welcome to Power Hack</h4>
                 <div className="card-body">
                     <h2 className="text-center text-2xl font-bold">Login</h2>
 
@@ -135,16 +97,7 @@ const Login = () => {
                         <input className='btn w-full max-w-xs' type="submit" value="Login " />
                     </form>
 
-                    <p className='text-center'>New to Toolsify? <a href="/signup" className='text-secondary'>Create New Account</a></p>
-                    {/* <p className='text-center'>Forget Password? <Link to='' className='text-secondary' onClick={resetPassword}>Reset Password</Link></p> */}
-                    <div className="divider">OR</div>
-                    <button
-                        className="btn btn-outline"
-                    >Continue With Google</button>
-                    {/* <button
-                    onClick={() => signInWithGoogle()}
-                    className="btn btn-outline"
-                >Continue With Google</button> */}
+                    <p className='text-center'>New to Power Hack? <a href="/signup" className='text-secondary'>Create New Account</a></p>
                 </div>
             </div>
         </div >
